@@ -39,9 +39,6 @@ function ConfirmDelete()
 @foreach($posts as $post)
 <article class="post" data-postid="{{ $post->id }}">
 
-@if ($post->image != null)
-	<img class="post-img" src="/uploads/posts/{{ $post->image }}">
-	@endif
 		<p>{{ $post->body }}</p>
 			
 	<div class="info">
