@@ -16,6 +16,8 @@ function ConfirmDelete()
 
 @section('content')
 
+@include('includes.error-messages')
+
 <div class="product-group">
 <ul>
 @foreach($products as $product)

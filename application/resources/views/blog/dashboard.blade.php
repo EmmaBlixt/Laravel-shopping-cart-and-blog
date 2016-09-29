@@ -15,29 +15,29 @@ function ConfirmDelete()
 @endsection
 
 @section('content')
-<div class="centered">
 
+<div class="centered">
 <section class="new-post">
 	   
 		<h3>Make a new post</h3>
 
 	@include('includes.error-messages')
-
-		{!! Form::open(array('method'=>'POST', 'action' => 'PostController@new_post')) !!}
+			<!-- form for making new posts -->
+		{!! Form::open(array('method'=>'POST', 'files'=>true, 'action' => 'PostController@new_post')) !!}
                 <p>{!! Form::textarea('text', null, array('placeholder' => 'What are your thoughts?')); !!}</p>
                 <p>{!! Form::submit('Post it', array('class' => 'button')); !!}</p>
                 {!! Form::close() !!}
 	
 </section>
-</div>
 
 <hr>
-<div class="centered">
+
 <section class="posts">
 <h3>Other people's thoughts</h3>
 
 @foreach($posts as $post)
 <article class="post" data-postid="{{ $post->id }}">
+
 
 		<p>{{ $post->body }}</p>
 			
@@ -57,17 +57,17 @@ function ConfirmDelete()
 	@endif
 
 	<div class="like-ratio">	
-			@for ($i = 0; $i < count($post->likes); $i++)	
+			@for ($i = 0; $i < $post->likes->count(); $i++)	
 			@endfor
 			<p>Likes: {{ $i }} </p>
-		</div>
-		</div>
+	</div> <!-- end of .like-ratio -->
+	</div> <!-- end of .interaction -->
 	
 	</article>
 @endforeach
 
-</section>
-</div>
+</section> <!-- end of .posts -->
+</div> <!-- end of .centered -->
 
 
 
@@ -81,11 +81,13 @@ function ConfirmDelete()
       <div class='modal-body'>
        
         <textarea class='input-form' id='post-body'></textarea>
-		
+
+
       </div>
       <div class='modal-footer'>
         <button type='button' class='button' data-dismiss='modal'>Close</button>
         <button type='button' class='button' id='modal-save'>Save changes</button>
+
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

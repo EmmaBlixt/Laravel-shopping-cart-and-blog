@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
 use Auth;
 use Session;
+use DB;
+use App\Friend;
 
 class UserController extends Controller
 {
@@ -38,8 +40,7 @@ class UserController extends Controller
         return view('user.signin');
     }
 
-      public function get_profile() {   
-        $id = Auth::user()->id;
+      public function get_profile($username, $id) {   
         $user = User::find($id);
         return view('user.profile', ['user' => $user]);
   }
@@ -82,14 +83,14 @@ class UserController extends Controller
     $user->last_name = $request->get('last_name');
     $user->email = $request->get('email');
     $user->age = $request->get('age');
-    bcrypt($request->input('password'));
+    $user->password = bcrypt($request->input('password'));
 
     $file = array('image' => Input::file('image'));
 
 // check if image was uploaded
 if(!isset($_FILES['image']) || $_FILES['image']['error'] == UPLOAD_ERR_NO_FILE) {
     $user->update();
-    return redirect()->route('profile');
+    return redirect()->route('profile', ['username' => $user->name, 'id' => $user->id]);
 }
 else
 
@@ -100,17 +101,17 @@ else
       
      $user->profile_img = $fileName;
      $user->update();
-    return redirect()->route('profile');
+    return redirect()->route('profile', ['username' => $user->name, 'id' => $user->id]);
   }
 
 
 
 /*
 |--------------------------------------------------------------------------
-| Post signup/signin
+| Post signup
 |--------------------------------------------------------------------------
 |
-| Allows user to make a new profile or sign in on an existing one
+| Allows user to make a new profile
 | 
 */
 
@@ -123,31 +124,65 @@ else
                         'age' => 'numeric'
                     ]);
 
-        $user = new User([
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'name' => $request->input('name'),
-            'last_name' => $request->input('last_name'),
-            'age' => $request->input('age'),
-            ]);
+        $user = new User();
+
+        $user->name = $request->get('name');
+        $user->last_name = $request->get('last_name');
+        $user->email = $request->get('email');
+        $user->age = $request->get('age');
+        $user->password = bcrypt($request->input('password'));
+
+        $user->remember_token = $request->get('_token');
+
         $user->save();
         Auth::login($user);
-        return redirect()->route('profile');
+        return redirect()->route('profile', ['username' => $user->name, 'id' => $user->id]);
     }
     
+/*
+|--------------------------------------------------------------------------
+| Post signin
+|--------------------------------------------------------------------------
+|
+| Allows user to sign in to existing profile
+| 
+*/
 
-
-        public function post_signin(Request $request) {
+  public function post_signin(Request $request) {
        $this->validate($request, [
                         'email' => 'email|required',
                         'password' => 'required|min:4',
                     ]);
 
       if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-      
-        return redirect()->route('profile');
+        $id = Auth::user()->id;
+        return redirect()->route('profile', ['username' => Auth::user()->name, 'id' => Auth::user()->id]);
       }
       return redirect()->route('index');
     }
+
+
+/*
+|--------------------------------------------------------------------------
+| User search function
+|--------------------------------------------------------------------------
+|
+| Allows you to find users
+| 
+*/
+
+ public function get_results(Request $request) {
+
+       $this->validate($request, [
+                        'text' => 'required'
+                    ]);
+
+    $input = $request->get('text');
+    $users = User::where(DB::raw("CONCAT(name, ' ', last_name, email)"),
+      'LIKE', "%${input}%")->get();
+
+    return view('search.results', ['users' => $users, 'input' => $input]);
+ }
+
 
 }

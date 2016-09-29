@@ -3,9 +3,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
 use App\Post;
 use App\Like;
@@ -51,6 +48,7 @@ class PostController extends Controller
 
   $message = "An error occured";
 
+
      // if post is successfully uploaded, print message & redirect
      if($request->user()->posts()->save($post)){
       $message = "Post uploaded! (:";
@@ -79,7 +77,10 @@ class PostController extends Controller
       return redirect()->back();
     }
     else
- 
+
+$post->body = $request['body'];
+
+    
     $post->body = $request['body'];
     $post->update();
 

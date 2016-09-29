@@ -36,6 +36,28 @@ Route::group(['middleware' => 'web'], function() {
 	'as' => 'clear-cart'
 	]);
 
+	Route::get('/signup', [
+	'uses' => 'UserController@get_signup',
+	'as' => 'signup'
+	]);
+
+	Route::post('/signup', [
+	'uses' => 'UserController@post_signup',
+	'as' => 'post_signup'
+	]);
+
+
+	Route::get('/signin', [
+	'uses' => 'UserController@get_signin',
+	'as' => 'signin'
+	]);
+
+	Route::post('/signin', [
+	'uses' => 'UserController@post_signin',
+	'as' => 'post_signin'
+	]);
+
+
 });// end of middleware web group
 /*
 |--------------------------------------------------------------------------
@@ -84,27 +106,36 @@ Route::group(['middleware' => 'web'], function() {
 |
 */
 
-	Route::group(['prefix' => 'user'], function() {
+	Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
 			
-			Route::get('/signup', [
-			'uses' => 'UserController@get_signup',
-			'as' => 'signup'
-			]);
 
-			Route::post('/signup', [
-			'uses' => 'UserController@post_signup',
-			'as' => 'post_signup'
+			Route::get('/profile/{username}/{id}', [
+			'uses' => 'UserController@get_profile',
+			'as' => 'profile'
 			]);
 
 
-			Route::get('/signin', [
-			'uses' => 'UserController@get_signin',
-			'as' => 'signin'
+			Route::get('/add-friend/{username}/{id}', [
+			'uses' => 'FriendController@add_friend',
+			'as' => 'add-friend'
 			]);
 
-			Route::post('/signin', [
-			'uses' => 'UserController@post_signin',
-			'as' => 'post_signin'
+
+			Route::get('/accept-friend/{id}', [
+			'uses' => 'FriendController@accept_friend',
+			'as' => 'accept-friend'
+			]);
+
+
+			Route::get('/friends/{username}/{id}', [
+			'uses' => 'FriendController@get_friends_list',
+			'as' => 'friends'
+			]);
+
+
+			Route::post('/remove-friend/{id}', [
+			'uses' => 'FriendController@post_remove_friend',
+			'as' => 'remove-friend'
 			]);
 
 		}); // end of user prefix group
@@ -124,10 +155,12 @@ Route::group(['middleware' => 'web'], function() {
 				'as' => 'delete-post'
 			]);
 
+
 			Route::post('/edit-post', [
 				'uses' => 'PostController@edit_post',
 				'as' => 'edit-post'
 				]);
+
 
 			Route::post('/like', [
 				'uses' => 'PostController@like_post',
@@ -135,6 +168,20 @@ Route::group(['middleware' => 'web'], function() {
 				]);
 
 	
+/*
+|--------------------------------------------------------------------------
+| Search Routes
+|--------------------------------------------------------------------------
+|
+| Search for registered users
+|
+*/
+
+	Route::post('/search', [
+	'uses' => 'UserController@get_results',
+	'as' => 'post_search'
+	]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -147,10 +194,6 @@ Route::group(['middleware' => 'web'], function() {
 
 	Route::group(['middleware' => 'auth'], function(){
 			
-			Route::get('/profile', [
-			'uses' => 'UserController@get_profile',
-			'as' => 'profile'
-			]);
 
 			Route::get('/logout', [
 			'uses' => 'UserController@get_logout',

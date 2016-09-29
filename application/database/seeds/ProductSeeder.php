@@ -30,7 +30,7 @@ class ProductSeeder extends Seeder
         $product->name = "Bird";
         $product->description = "Likes to sing";
         $product->price = 45;
-        $product->image = "bird.jpg";
+        $product->image = "bird.png";
         $product->save();
 
         $product = new Product;
