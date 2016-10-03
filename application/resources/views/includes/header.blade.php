@@ -13,7 +13,19 @@
                 <p>{!! Form::submit('Search', array('class' => 'button')); !!}</p>
                 {!! Form::close() !!}
 	</li>
+
+
 <div class="nav-right">
+
+	<!-- Echo out the number of friend requests this user has -->
+@if (Auth::check() && Auth::user()->friend_requests()->count())
+	<li>
+		<a href="{{ route('friends', ['name' => Auth::user()->name, 'id' => Auth::user()->id]) }}" 
+			title="You have {{ Auth::user()->friend_requests()->count() }} friend requests!">
+		♥ {{ Auth::user()->friend_requests()->count() }}
+		</a>
+	</li>
+@endif
 	@if(Auth::check())
 			<li>
 				<a href="{{ route('profile', ['username' => Auth::user()->name, 

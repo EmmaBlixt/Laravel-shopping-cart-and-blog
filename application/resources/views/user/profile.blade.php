@@ -90,7 +90,7 @@
 </table>
 @endif
 
-@if (Auth::user() == $user)
+@if (!$user->friends()->count() && Auth::user() == $user)
 			<a href="{{ route('friends', ['name' => $user->name, 'id' => $user->id]) }}"><h3>See all friends</h3></a>
 			@endif
 

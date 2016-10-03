@@ -110,7 +110,7 @@ class FriendController extends Controller
       Auth::user()->accept_friend_request($user);
       $message = "Friend request accepted!";
 
-      return redirect()->route('friends', ['username' => Auth::user()->name, 'id' => Auth::user()->id])
+      return redirect()->route('profile', ['username' => Auth::user()->name, 'id' => Auth::user()->id])
         ->with((['message' => $message]));
   }
 
@@ -129,11 +129,35 @@ class FriendController extends Controller
         return redirect()->back();
       }
 
-      $message = "Friend removed";
+      $message = "Friend removed.";
       Auth::user()->delete_friend($user);
       return redirect()->back()->with((['message' => $message]));
   }
 
 
+/*
+|--------------------------------------------------------------------------
+| Decline friend request
+|--------------------------------------------------------------------------
+*/
+  public function post_decline_request($id) {
+      $user = User::find($id);
+
+       // if user is not found, redirect to index
+      if (!$user) {
+        return redirect()
+        ->route('index')
+        ->with((['message' => $message]));
+      }
+
+        // if the other person hasn't added us, redirect to the index
+      if (!Auth::user()->has_recieved_friend_requests($user)) {
+        return redirect()->route('index');
+      }
+
+      $message = "Request declined.";
+      Auth::user()->decline_request($user);
+      return redirect()->back()->with((['message' => $message]));
+  }
 
 }

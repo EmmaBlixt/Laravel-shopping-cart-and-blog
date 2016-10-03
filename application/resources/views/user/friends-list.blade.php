@@ -73,7 +73,7 @@
 						<div class="accept-decline">
 							<a href="{{ route('accept-friend', ['id' => $request_owner->id]) }}" class="button success">Accept</a>
 							
-							
+							<a href="{{ route('decline-request', ['id' => $request_owner->id]) }}" class="button">Decline</a>
 						</div><!-- end of .accept-decline-->
 			
 					</div> <!-- end of .user-list-->

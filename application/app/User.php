@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Auth;
+use DB;
 
 class User extends Model implements AuthenticatableContract
 
@@ -141,6 +143,11 @@ public function isAdmin() {
     }
 
 
+
+    public function decline_request(User $user) {
+        $this->friend_of()->detach($user->id);
+        $this->friends_of_mine()->detach($user->id);
+    }
 
 
 }
