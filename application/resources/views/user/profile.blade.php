@@ -89,5 +89,10 @@
 	</td>
 </table>
 @endif
+
+@if (Auth::user() == $user)
+			<a href="{{ route('friends', ['name' => $user->name, 'id' => $user->id]) }}"><h3>See all friends</h3></a>
+			@endif
+
 </div> <!-- end of .centered -->
 @endsection

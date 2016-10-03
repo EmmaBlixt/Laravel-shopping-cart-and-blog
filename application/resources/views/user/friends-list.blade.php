@@ -36,7 +36,7 @@
 				</a>
 			
 			<div class="accept-decline">
-				<form action="{{ route('remove-friend', ['id' => $user->id]) }}" method="post">
+				<form action="{{ route('remove-friend', ['id' => $friend->id]) }}" method="post">
 					<input type="submit" class="button" value="Remove">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				</form>
@@ -73,10 +73,7 @@
 						<div class="accept-decline">
 							<a href="{{ route('accept-friend', ['id' => $request_owner->id]) }}" class="button success">Accept</a>
 							
-							<form action="{{ route('remove-friend', ['id' => $user->id]) }}" method="post">
-								<input type="submit" class="button" value="Decline">
-								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-							</form>
+							
 						</div><!-- end of .accept-decline-->
 			
 					</div> <!-- end of .user-list-->

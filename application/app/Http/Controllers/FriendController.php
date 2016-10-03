@@ -110,7 +110,7 @@ class FriendController extends Controller
       Auth::user()->accept_friend_request($user);
       $message = "Friend request accepted!";
 
-      return redirect()->route('profile', ['username' => $user->name, 'id' => $user->id])
+      return redirect()->route('friends', ['username' => Auth::user()->name, 'id' => Auth::user()->id])
         ->with((['message' => $message]));
   }
 
@@ -121,7 +121,7 @@ class FriendController extends Controller
 |--------------------------------------------------------------------------
 */
 
-  public function post_remove_friend($id){
+  public function post_remove_friend($id) {
      $user = User::find($id);
 
   // if current user is not friends with the other user, redirect back
