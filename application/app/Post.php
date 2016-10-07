@@ -15,9 +15,10 @@ class Post extends Model
     	return $this->hasMany('App\Like');
     }
 
-    public function dislikes(){
-    	return $this->hasMany('App\Like');
+
+    public function replies() {
+        return $this->hasMany( 'App\Post', 'parent_id');
     }
 
-    protected $fillable = ['body', 'image'];
+    protected $fillable = ['body', 'parent_id'];
 }

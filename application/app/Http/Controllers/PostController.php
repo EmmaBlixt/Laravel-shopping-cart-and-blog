@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\User;
@@ -18,15 +17,14 @@ class PostController extends Controller
 | Redirect to signin/singup, edit profile and logout pages
 |
 */
-
     public function get_dashboard() {   
-        $posts = Post::orderBy('created_at', 'desc')->get();
 
+        $posts = Post::where('parent_id',  0)->orderBy('created_at', 'desc')->get();
+    
     return view('blog.dashboard', [
       'posts' => $posts
       ]);
     }
-
     /*
 |--------------------------------------------------------------------------
 | New post
@@ -35,28 +33,20 @@ class PostController extends Controller
 | Allows users to make posts, provides validation
 |
 */
-
   public function new_post(Request $request) {
-
      $this->validate($request, [
       'text' => 'required|max:1000'
       ]);
-
       $post = new Post([
             'body' => $request->input('text')
             ]);
-
   $message = "An error occured";
-
-
      // if post is successfully uploaded, print message & redirect
      if($request->user()->posts()->save($post)){
       $message = "Post uploaded! (:";
      }
-
     return redirect()->route('dashboard')->with(['message' => $message]);
   }
-
 /*
 |--------------------------------------------------------------------------
 | Edit Post
@@ -66,30 +56,22 @@ class PostController extends Controller
 |
 */
  public function edit_post(Request $request) {
-
     $this->validate($request, [
-      'body' => 'required'
+      'body' => 'required|max:1000'
       ]);
-
     $post = Post::find($request['postId']);
     // check if logged in user is post author
     if(Auth::user() != $post->user) {
       return redirect()->back();
     }
     else
-
 $post->body = $request['body'];
-
     
     $post->body = $request['body'];
     $post->update();
-
        return response()->json(['new_body' => $post->body], 200);
      
   }
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Delete Post
@@ -98,7 +80,6 @@ $post->body = $request['body'];
 | Allows the posts' creator to delete the post
 |
 */
-
   public function delete_post($id){
     
     $post = Post::find($id);
@@ -107,14 +88,10 @@ $post->body = $request['body'];
       return redirect()->back();
     }
     else
-
     $post->delete();
     return redirect()->route('dashboard')->with(['message' => 'Post deleted!']);
   
   }
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Like Post
@@ -123,14 +100,12 @@ $post->body = $request['body'];
 | Handle post likes and dislikes
 |
 */
-
     public function like_post(Request $request)
     {
         $post_id = $request['postId'];
         $is_like = $request['isLike'] === 'true';
         $update = false;
         $post = Post::find($post_id);
-
         //if post can't be fetched, do nothing
         if (!$post) {
             return null;
@@ -161,5 +136,59 @@ $post->body = $request['body'];
         return null;
     }
 
+/*
+|--------------------------------------------------------------------------
+| Reply
+|--------------------------------------------------------------------------
+|
+| Allows users to reply to posts, provides validation
+|
+*/
+  public function post_reply(Request $request) {
+     $this->validate($request, [
+      'reply-text' => 'required|max:1000'
+      ]);
+
+
+      $post = new Post([
+            'body' => $request->input('reply-text'),
+            'parent_id' => $request->input('post_id')
+            ]);
+
+      $message = "An error occured";
+
+     // if reply is successfully uploaded, print message & redirect
+
+     if($request->user()->posts()->save($post)){
+      $message = "Reply uploaded! (:";
+     }
+    return redirect()->route('dashboard')->with(['message' => $message]);
+  }
+
+
+  public function get_replies() {
+
+  }
+
+  /*
+|--------------------------------------------------------------------------
+| Delete Reply
+|--------------------------------------------------------------------------
+|
+| Allows the posts' creator to delete the post
+|
+*/
+  public function delete_reply($id){
+    
+    $post = Post::find($id);
+  // check if logged in user is post author
+    if(Auth::user() != $post->user) {
+      return redirect()->back();
+    }
+    else
+    $post->delete();
+    return redirect()->route('dashboard')->with(['message' => 'Post deleted!']);
+  
+  }
 
 }

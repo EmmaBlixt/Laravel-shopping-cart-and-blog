@@ -50,13 +50,16 @@ public function isAdmin() {
         return $this->hasMany('App\Like');
     }
 
-    public function dislikes() {
+     public function dislikes() {
         return $this->hasMany('App\Like');
     }
+
 
     public function posts() {
         return $this->hasMany('App\Post');
     }
+
+
 
 /*
 |--------------------------------------------------------------------------

@@ -233,6 +233,32 @@ nav li a:hover {
   padding-top: 10px;
 }
 
+.replies {
+  margin-top: -25px;
+  background-color: #f8f8f8;
+  height: 65px;
+  width: 80%;
+  border-bottom: 1px solid #cfcfcf;
+
+   box-shadow: 10px 0 5px -2px #888;
+  -webkit-box-shadow: 10px 0 5px -2px #888;
+  -moz-box-shadow: 10px 0 5px -2px #888;
+}
+
+.replies .button {
+  margin-top: -70px;
+  right: 40px;
+  position: relative;
+  float: right;
+}
+
+.replies textarea {
+  height: 60px;
+  left: 5px;
+  position: relative;
+}
+
+
 .info {
   font-family: 'Josefin Sans', sans-serif;
   margin-top: 20px;
@@ -244,6 +270,7 @@ nav li a:hover {
   margin-top: 5px;
   margin-bottom: 10px;
 }
+
 
 .interaction a {
   margin-right: 15px;
@@ -272,8 +299,34 @@ nav li a:hover {
   height: auto;
 }
 
+#delete-reply {
+  font-size: 10px;
+  float: right;
+  position: relative;
+  margin-top: -20px;
+}
+
+.reply-list {
+  background-color: #f8f8f8;
+  width: 500px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #cfcfcf;
+}
+
+.reply-list img {
+  float: left;
+  width: 60px;
+  height: auto;
+}
 
 
+.reply-list p {
+  position: relative;
+  left: 10px;
+  display: block;
+  margin: auto;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -313,7 +366,8 @@ nav li a:hover {
 
 
 .user-list p {
-  margin-left: 15px;
+  position: relative;
+  left: 10px;
   display: block;
   margin: auto;
 }

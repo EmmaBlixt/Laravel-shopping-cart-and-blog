@@ -40,13 +40,15 @@ function ConfirmDelete()
 
 
 		<p>{{ $post->body }}</p>
-			
+
 	<div class="info">
+		<a href="{{ route('profile', ['username' => $post->user->name, 'id' => $post->user->id]) }}" title="Go to profile page">
 		<p>Posted by <b>{{ $post->user->name . ' ' . $post->user->last_name }}</b> at {{ $post->created_at }}</p>
+		</a>
 	</div>
 	<hr>
 	
-	<div class="interaction">
+<div class="interaction">
 	@if (Auth::user() == $post->user)
 		<a href="#" class="edit edit-post">Edit</a>
 		<a href="{{ route('delete-post', ['id' => $post->id]) }}" Onclick="ConfirmDelete()" class="delete">Delete</a>
@@ -61,9 +63,49 @@ function ConfirmDelete()
 			@endfor
 			<p>Likes: {{ $i }} </p>
 	</div> <!-- end of .like-ratio -->
-	</div> <!-- end of .interaction -->
+</div> <!-- end of .interaction -->
+
+<hr/>
+
+<!-- list upp all replies -->
+	<p>Replies: {{ $post->replies->count() }}</p>
+
+		@foreach($post->replies as $reply)
+			<div class="reply-list">
+
+				<a href="{{ route('profile', ['username' => $reply->user->name, 'id' => $reply->user->id]) }}">
+					<img src="/uploads/avatars/{{ $reply->user->profile_img }}">
+					<p><i>{{ $reply->user->name }} {{ $reply->user->last_name }} said:</i></p> 
+				</a>
+				<p>{{ $reply->body }}</p>	
+
+<!-- the one who wrote the comment or the post owner can decide to delete replies -->
+			@if (Auth::user() == $reply->user)
+				<p><a href="{{ route('delete-post', ['id' => $reply->id]) }}" Onclick="ConfirmDelete()" class="delete button" id="delete-reply">Delete</a></p>
+			@elseif (Auth::user() == $post->user)
+				<p><a href="{{ route('delete-post', ['id' => $reply->id]) }}" Onclick="ConfirmDelete()" class="delete button" id="delete-reply">Delete</a></p>
+			@endif
+					
+	</div> <!-- end of .user-list -->
+		@endforeach
+	
+		
+
 	
 	</article>
+
+
+	<div class="replies">
+			<!-- form for making replies -->
+			{!! Form::open(array('method'=>'POST', 'action' => 'PostController@post_reply')) !!}
+                <p>{!! Form::textarea('reply-text', null, array('placeholder' => 'Post a reply')); !!}</p>
+                <p>{!! Form::submit('Reply', array('class' => 'button')); !!}</p>
+                {!! Form::hidden('post_id', $post->id) !!}
+               {!! Form::close() !!}
+
+	</div> <!-- end of .replies -->
+
+	
 @endforeach
 
 </section> <!-- end of .posts -->

@@ -138,6 +138,11 @@ Route::group(['middleware' => 'web'], function() {
 			'as' => 'remove-friend'
 			]);
 
+			Route::get('/decline-request/{id}', [
+			'uses' => 'FriendController@post_decline_request',
+			'as' => 'decline-request'
+			]);
+
 		}); // end of user prefix group
 
 
@@ -149,6 +154,19 @@ Route::group(['middleware' => 'web'], function() {
 | Deals with posts on the blog
 |
 */
+
+		Route::group(['middleware' => 'auth'], function(){
+
+			Route::post('/new-post', [
+			'uses' => 'PostController@new_post',
+			'as' => 'new-post'
+			]);
+
+
+			Route::post('/reply', [
+			'uses' => 'PostController@post_reply',
+			'as' => 'reply'
+			]);
 
 			Route::get('/delete-post/{id}', [
 				'uses' => 'PostController@delete_post',
@@ -167,6 +185,13 @@ Route::group(['middleware' => 'web'], function() {
 				'as' => 'like'
 				]);
 
+
+			Route::get('/dashboard', [
+			'uses' => 'PostController@get_dashboard',
+			'as' => 'dashboard'
+			]);
+
+		});// end of middleware web group
 	
 /*
 |--------------------------------------------------------------------------
@@ -220,15 +245,6 @@ Route::group(['middleware' => 'web'], function() {
 			'as' => 'delete-product'
 			]);
 
-			Route::get('/dashboard', [
-			'uses' => 'PostController@get_dashboard',
-			'as' => 'dashboard'
-			]);
-
-			Route::post('/new-post', [
-			'uses' => 'PostController@new_post',
-			'as' => 'new-post'
-			]);
 
 			});// end of middleware auth group
 
