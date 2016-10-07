@@ -80,10 +80,9 @@ function ConfirmDelete()
 				<p>{{ $reply->body }}</p>	
 
 <!-- the one who wrote the comment or the post owner can decide to delete replies -->
-			@if (Auth::user() == $reply->user)
-				<p><a href="{{ route('delete-post', ['id' => $reply->id]) }}" Onclick="ConfirmDelete()" class="delete button" id="delete-reply">Delete</a></p>
-			@elseif (Auth::user() == $post->user)
-				<p><a href="{{ route('delete-post', ['id' => $reply->id]) }}" Onclick="ConfirmDelete()" class="delete button" id="delete-reply">Delete</a></p>
+			@if (Auth::user() == $reply->user || Auth::user() == $post->user)
+				<p><a href="{{ route('delete-reply', ['id' => $reply->id, 'parent-post_id' => $post->id]) }}" Onclick="ConfirmDelete()" class="delete button" id="delete-reply">Delete</a></p>
+			
 			@endif
 					
 	</div> <!-- end of .user-list -->

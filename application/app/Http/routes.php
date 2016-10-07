@@ -173,6 +173,11 @@ Route::group(['middleware' => 'web'], function() {
 				'as' => 'delete-post'
 			]);
 
+			Route::get('/delete-post/{id}/{post_parent_id}', [
+				'uses' => 'PostController@delete_reply',
+				'as' => 'delete-reply'
+			]);
+
 
 			Route::post('/edit-post', [
 				'uses' => 'PostController@edit_post',

@@ -81,13 +81,14 @@ $post->body = $request['body'];
 |
 */
   public function delete_post($id){
-    
+
+    $parent_post = Post::find($parent_post_id);
     $post = Post::find($id);
   // check if logged in user is post author
     if(Auth::user() != $post->user) {
       return redirect()->back();
     }
-    else
+
     $post->delete();
     return redirect()->route('dashboard')->with(['message' => 'Post deleted!']);
   
@@ -178,16 +179,18 @@ $post->body = $request['body'];
 | Allows the posts' creator to delete the post
 |
 */
-  public function delete_reply($id){
-    
+  public function delete_reply($id, $parent_post_id){
+
+    $parent_post = Post::find($parent_post_id);
     $post = Post::find($id);
+
   // check if logged in user is post author
-    if(Auth::user() != $post->user) {
-      return redirect()->back();
+    if(Auth::user() == $post->user OR Auth::user() == $parent_post->user) {
+       $post->delete();
+    return redirect()->route('dashboard')->with(['message' => 'Reply removed']);
     }
-    else
-    $post->delete();
-    return redirect()->route('dashboard')->with(['message' => 'Post deleted!']);
+
+    return redirect()->back();
   
   }
 
