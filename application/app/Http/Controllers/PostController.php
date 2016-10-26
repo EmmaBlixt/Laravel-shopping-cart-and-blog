@@ -65,9 +65,9 @@ class PostController extends Controller
       return redirect()->back();
     }
     else
-$post->body = $request['body'];
-    
+
     $post->body = $request['body'];
+    
     $post->update();
        return response()->json(['new_body' => $post->body], 200);
      

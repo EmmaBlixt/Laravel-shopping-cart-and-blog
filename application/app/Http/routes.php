@@ -138,10 +138,51 @@ Route::group(['middleware' => 'web'], function() {
 			'as' => 'remove-friend'
 			]);
 
+
 			Route::get('/decline-request/{id}', [
 			'uses' => 'FriendController@post_decline_request',
 			'as' => 'decline-request'
 			]);
+
+
+			Route::get('/logout', [
+			'uses' => 'UserController@get_logout',
+			'as' => 'logout'
+			]);
+
+
+			Route::get('/edit-profile', [
+			'uses' => 'UserController@edit_profile',
+			'as' => 'edit-profile'
+			]);
+
+
+			Route::post('/update-profile', [
+			'uses' => 'UserController@update_profile',
+			'as' => 'update-profile' 
+			]);
+
+			Route::get('/messages/{username}/{id}', [
+			'uses' => 'MessageController@get_messages',
+			'as' => 'messages' 
+			]);
+
+			Route::post('/reply-to-message', [
+			'uses' => 'MessageController@reply_to_message',
+			'as' => 'reply-to-message'
+			]);
+
+			Route::post('/send-message', [
+			'uses' => 'MessageController@send_message',
+			'as' => 'send-message'
+			]);
+
+
+			Route::get('/delete-message/{id}', [
+				'uses' => 'MessageController@delete_message',
+				'as' => 'delete-message'
+			]);
+
 
 		}); // end of user prefix group
 
@@ -224,21 +265,6 @@ Route::group(['middleware' => 'web'], function() {
 
 	Route::group(['middleware' => 'auth'], function(){
 			
-
-			Route::get('/logout', [
-			'uses' => 'UserController@get_logout',
-			'as' => 'logout'
-			]);
-
-			Route::get('/edit-profile', [
-			'uses' => 'UserController@edit_profile',
-			'as' => 'edit-profile'
-			]);
-
-			Route::post('/update-profile', [
-			'uses' => 'UserController@update_profile',
-			'as' => 'update-profile' 
-			]);
 
 			Route::get('/insert-product', [
 			'uses' => 'ProductController@get_insert_product',

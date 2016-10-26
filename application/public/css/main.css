@@ -328,6 +328,51 @@ nav li a:hover {
   margin: auto;
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Messages
+|--------------------------------------------------------------------------
+*/
+
+.message-div {
+  margin-top: 20px;
+  width: 600px;
+  text-align: left;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.message-div textarea{
+  height: 150px;
+}
+
+.message-div img{
+  width: 40px;
+  height: auto;
+}
+
+.message-div h3{
+  display: inline-block;
+  left: 5px;
+  position: relative;
+}
+
+.timestamp {
+  font-style: italic;
+}
+
+#asd {
+  display:none;
+}
+
+#asd textarea {
+  height: 150px;
+}
+
+.msg {
+  font-size: 25px;
+}
+
 /*
 |--------------------------------------------------------------------------
 | User search

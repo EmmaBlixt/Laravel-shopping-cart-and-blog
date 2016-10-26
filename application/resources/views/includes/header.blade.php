@@ -17,6 +17,17 @@
 
 <div class="nav-right">
 
+	<!-- Echo out the number of unread messages this user has -->
+@if (Auth::check() && Auth::user()->unread_recieved_messages()->count())
+	<li>
+		<a href="{{ route('messages', ['username' => Auth::user()->name, 'id' => Auth::user()->id]) }}" 
+			title="You have {{ Auth::user()->unread_recieved_messages()->count() }} unread @if(Auth::user()->unread_recieved_messages()->count() == 1)message! @else messages! @endif">
+		☺ {{ Auth::user()->unread_recieved_messages()->count() }}
+		</a>
+	</li>
+@endif
+
+
 	<!-- Echo out the number of friend requests this user has -->
 @if (Auth::check() && Auth::user()->friend_requests()->count())
 	<li>
@@ -47,9 +58,10 @@
 
 	@if(Auth::check())
 			<li><a href="{{ route('profile', ['username' => Auth::user()->name, 'id' => Auth::user()->id]) }}">Profile</a></li>
-			<li><a href="{{ route('logout') }}">Log out</a></li>
+			<li><a href="{{ route('messages', ['username' => Auth::user()->name, 'id' => Auth::user()->id]) }}" >Messages</a></li>
 			<li><a href="{{ route('friends', ['name' => Auth::user()->name, 'id' => Auth::user()->id]) }}">Friends</li></a>
 			<li><a href="{{ route('shopping-cart') }}">Shopping cart</li></a>
+			<li><a href="{{ route('logout') }}">Log out</a></li>
 		@else
 			<li><a href="{{ route('signin') }}">Sign in</a></li>
 			<li><a href="{{ route('signup') }}">Sign up</a></li>

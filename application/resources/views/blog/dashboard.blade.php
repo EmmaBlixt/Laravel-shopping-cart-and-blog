@@ -23,7 +23,7 @@ function ConfirmDelete()
 
 	@include('includes.error-messages')
 			<!-- form for making new posts -->
-		{!! Form::open(array('method'=>'POST', 'files'=>true, 'action' => 'PostController@new_post')) !!}
+		{!! Form::open(array('method'=>'POST', 'action' => 'PostController@new_post')) !!}
                 <p>{!! Form::textarea('text', null, array('placeholder' => 'What are your thoughts?')); !!}</p>
                 <p>{!! Form::submit('Post it', array('class' => 'button')); !!}</p>
                 {!! Form::close() !!}

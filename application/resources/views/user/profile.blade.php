@@ -1,5 +1,23 @@
 @extends('layouts.master')
 
+<script type='text/javascript'>
+function asd(a)
+{
+    if(a==1)
+    document.getElementById("asd").style.display="none";
+
+    else
+    document.getElementById("asd").style.display="block";
+
+    var hide_button = document.getElementById('hide');
+        if (hide_button.style.display === 'block' || hide_button.style.display === '')
+            hide_button.style.display = 'none';
+        else
+          hide_button.style.display = 'block'
+}
+
+</script>
+
 @section('title')
 	User profile
 @endsection
@@ -14,7 +32,7 @@
 
 	<h3>@include('includes.error-messages')</h3>
 
-<table>
+<table class="profile-table">
 	<tr>
 		<td>
 			<img class="user-img" src="/uploads/avatars/{{ $user->profile_img }}">
@@ -41,6 +59,16 @@
 			<input type="submit" class="button" value="Remove friend">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		</form>
+
+		<div id="asd">
+        {!! Form::open(array('method'=>'POST', 'action' => 'MessageController@send_message')) !!}
+           <p>{!! Form::textarea('message', null, array('placeholder' => 'Send a message')); !!}</p>
+           <p>{!! Form::submit('Send message', array('class' => 'button success')); !!}</p>
+           {!! Form::hidden('user_id', $user->id) !!}
+          {!! Form::close() !!}
+    <button class="button" id="show" onclick="asd(1)">Cancel</button>
+</div>
+<button class="button success" id="hide" onclick="asd(2)">Send a message</button>
 
 		@else
 		<p>
@@ -95,4 +123,35 @@
 			@endif
 
 </div> <!-- end of .centered -->
+
+
+<!--    Modal script to send messages -->
+<div class='modal fade' tabindex='-1' role='dialog' id='message-modal'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h2 class='modal-title'>Send a message</h2>
+      </div>
+      <div class='modal-body'>
+       
+        <textarea class='input-form' id='newMessage'></textarea>
+
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='button' data-dismiss='modal'>Close</button>
+        <button type='button' class='button' id='modal-send'>Send</button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+var token = '{{ Session::token() }}';
+var userId = '{{ $user->id }}';
+var url = '{{ route('send-message') }}';
+</script>
+
+
 @endsection

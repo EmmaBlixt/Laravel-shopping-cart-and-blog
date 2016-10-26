@@ -16,10 +16,10 @@ class FriendController extends Controller
 
     /*
 |--------------------------------------------------------------------------
-| Get routes
+| Get the list of friends
 |--------------------------------------------------------------------------
 |
-| Redirect to signin/singup, edit profile and logout pages
+| Lists up all of the users friends & friend requests
 |
 */
 
