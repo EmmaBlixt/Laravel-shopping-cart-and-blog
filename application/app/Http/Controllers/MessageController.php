@@ -24,13 +24,15 @@ class MessageController extends Controller
 |
 */
 
-
     public function get_messages() {
 
       $recieved_messages = Message::where('to_id', Auth::user()->id)->get();
-
       $sent_messages = Message::where('from_id', Auth::user()->id)->get();
 
+      // delete old messages that have were sent three months ago
+      $old_messages = Message::where('from_id', Auth::user()->id)
+                      ->where('created_at', '<', date("Y-m-d",strtotime("-3 Months")))
+                      ->delete();
       
       return view('user.messages', ['user' => Auth::user(),  
                                         'recieved_messages' => $recieved_messages,

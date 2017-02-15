@@ -27,8 +27,8 @@ class FriendController extends Controller
     public function get_friends_list($username, $id) {
       $user = User::find($id);
       $friends = $user->friends();
-      $friend_requests = Auth::user()->friend_requests();
-      $sent_requests = Auth::user()->pending_friend_requests();
+      $friend_requests = $user->friend_requests();
+      $sent_requests = $user->pending_friend_requests();
       
       return view('user.friends-list', ['user' => $user, 
                                         'friends' => $friends, 

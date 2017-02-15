@@ -124,15 +124,14 @@ else
                         'age' => 'numeric'
                     ]);
 
-        $user = new User();
-
-        $user->name = $request->get('name');
-        $user->last_name = $request->get('last_name');
-        $user->email = $request->get('email');
-        $user->age = $request->get('age');
+            $user = new User([
+            'name' => $request->input('name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'age' => $request->input('age'),
+            'remember_token' => $request->input('_token')
+            ]);
         $user->password = bcrypt($request->input('password'));
-
-        $user->remember_token = $request->get('_token');
 
         $user->save();
         Auth::login($user);
@@ -154,11 +153,14 @@ else
                         'password' => 'required|min:4',
                     ]);
 
-      if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-        $id = Auth::user()->id;
+      if (Auth::attempt(['email' => $request->input('email'), 
+                        'password' => $request->input('password')])) {
+              $id = Auth::user()->id;
         return redirect()->route('profile', ['username' => Auth::user()->name, 'id' => Auth::user()->id]);
       }
-      return redirect()->route('index');
+      
+      $message = "Wrong username or password!";
+      return redirect()->route('signin')->with(['message' => $message]);
     }
 
 

@@ -61,6 +61,25 @@ public function isAdmin() {
 
 
 
+
+
+/*
+|--------------------------------------------------------------------------
+| Event functions
+|--------------------------------------------------------------------------
+|
+| Handle events
+|
+*/
+
+    public function events() {
+        return $this->hasMany('App\Event');
+    }
+
+    public function todays_events() {
+        return $this->events()->where('event_date', date('y m d'))->get();
+    }
+
 /*
 |--------------------------------------------------------------------------
 | Friend relationships
@@ -150,6 +169,34 @@ public function isAdmin() {
     public function decline_request(User $user) {
         $this->friend_of()->detach($user->id);
         $this->friends_of_mine()->detach($user->id);
+    }
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Message functions
+|--------------------------------------------------------------------------
+|
+| Handle private messaging
+|
+*/
+
+    public function messages() {
+        return $this->hasMany('App\Message');
+    }
+
+
+    public function recieved_messages() {
+        return $this->belongsToMany( 'App\User', 'messages', 'to_id', 'from_id');
+    }
+        
+    public function sent_messages() {
+        return $this->belongsToMany( 'App\User', 'messages', 'from_id', 'to_id');
+    }
+       
+    public function unread_recieved_messages() {
+        return $this->recieved_messages()->wherePivot('opened', false)->get();
     }
 
 

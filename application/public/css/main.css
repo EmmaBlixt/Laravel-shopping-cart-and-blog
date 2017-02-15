@@ -47,6 +47,7 @@ h3{
 
 p {
     text-align: left;
+    font-family: 'Lato';
 }
 
 .user-img {
@@ -90,7 +91,7 @@ table {
 .nav-right .dropdown-nav-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #333;
     width: 120px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 10px 14px;
@@ -196,7 +197,10 @@ nav li a:hover {
   margin: auto;
 }
 
-
+#message {
+  margin: auto;
+  text-align: center;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -426,6 +430,22 @@ nav li a:hover {
 
 .accept-decline a {
   display: block;
+}
+
+
+.profile-menu {
+  font-size: 20px;
+  text-align: left;
+  background-color: #e4e4e4;
+  border-radius: 10px;
+}
+
+select {
+  width: 200px;
+  background-color: #efefef;
+  font-family: 'Lato';
+  font-size: 18px;
+  color: #646464;
 }
 
 /*
@@ -1596,4 +1616,239 @@ textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+
+/*******************************Calendar Top Navigation*********************************/
+div#calendar{
+  margin: auto;
+  margin-top: 20px;
+  padding:0px;
+  width: 602px;
+  font-family:Helvetica, "Times New Roman", Times, serif;
+}
+div#calendar div.box{
+    position:relative;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:40px;
+    background-color:   #787878 ;      
+}
+div#calendar div.header{
+    line-height:40px;  
+    vertical-align:middle;
+    position:absolute;
+    left:11px;
+    top:0px;
+    width:582px;
+    height:40px;   
+    text-align:center;
+} 
+div#calendar div.header a.prev,div#calendar div.header a.next-month{ 
+    position:absolute;
+    top:0px;   
+    height: 17px;
+    display:block;
+    cursor:pointer;
+    text-decoration:none;
+    color:#FFF;
+} 
+div#calendar div.header span.title{
+    color:#FFF;
+    font-size:18px;
+} 
+div#calendar div.header a.prev{
+    left:0px;
+}
+div#calendar div.header a.next-month{
+    right:0px;
+}
+/*******************************Calendar Content Cells*********************************/
+div#calendar div.box-content{
+    border:1px solid #787878 ;
+    border-top:none;
+}
+div#calendar ul.label{
+    float:left;
+    margin: 0px;
+    padding: 0px;
+    margin-top:5px;
+    margin-left: 5px;
+}
+div#calendar ul.label li{
+    margin:0px;
+    padding:0px;
+    margin-right:5px;  
+    float:left;
+    list-style-type:none;
+    width:80px;
+    height:40px;
+    line-height:40px;
+    vertical-align:middle;
+    text-align:center;
+    color:#000;
+    font-size: 15px;
+    background-color: transparent;
+}
+div#calendar ul.dates{
+    float:left;
+    margin: 0px;
+    padding: 0px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+/** overall width = width+padding-right**/
+div#calendar ul.dates li{
+    margin:0px;
+    padding:0px;
+    margin-right:5px;
+    margin-top: 5px;
+    line-height:80px;
+    vertical-align:middle;
+    float:left;
+    list-style-type:none;
+    width:80px;
+    height:80px;
+    font-size:25px;
+    background-color: #DDD;
+    color:#000;
+    text-align:center; 
+}
+:focus{
+    outline:none;
+}
+
+div#calendar ul.dates li:hover{
+    background-color: #cacaca;
+}
+
+div.clear{
+    clear:both;
+}
+
+div#calendar ul.dates li.this_today { 
+  background-color: #606060; 
+  color: white; 
+}
+
+div#calendar ul.dates li.this_today:hover { 
+  background-color: #4d4d4d;
+}
+
+span#event_today { 
+  background-color: #898989; 
+  border-radius: 20%;
+  color: white; 
+  width: 80px;
+  height: 80px;
+}
+
+#event-group {
+  position: absolute;
+  display: inline-block;
+  width: 270px;
+  left: 50px;
+  float: left;
+  clear: both;
+  border: 1px solid #bcbcbc;
+  border-radius: 10px;
+}
+
+#event {
+  margin: auto;
+  background-color: #dddddd;
+  width: 250px;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  border-radius: 10px;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  border: 2px solid #bcbcbc;
+}
+
+#event p {
+  text-align: center;
+  line-height: 18px;
+  margin-top: -10px;
+}
+
+#event h3 {
+  font-size: 25px;
+  text-align: center;
+}
+
+#event a {
+  font-size: 20px;
+  text-align: right;
+  top: -10px;
+  position: relative;
+  right: 90px;
+}
+
+.event-handler {
+  position: relative;
+  width: 100px;
+  display: inline-block;
+  float: right;
+  right: 250px;
+  top: 440px;
+}
+
+#next_event {
+  background-color: #606060; 
+  color: white; 
+}
+
+.event-info {
+  font-size: 16px;
+}
+
+
+#add_event {
+  display:none;
+  position: fixed;
+  float: right;
+  right: -10px;
+  margin-top: 20px;
+}
+
+#add_event p{
+  display: block;
+  margin-top: -10px;
+}
+
+#no-event {
+  text-align: left;
+  width: 245px;
+  height: 80px;
+  margin: auto;
+  margin-left: 50px;
+  top: 120px;
+  position: fixed;
+  background-color: #ececec;
+  border-radius: 10px;
+   box-shadow: 10px 0 5px -2px #888;
+  -webkit-box-shadow: 10px 0 5px -2px #888;
+  -moz-box-shadow: 10px 0 5px -2px #888;
+}
+
+#no-event p {
+  top: 5px;
+  position: relative;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+
+#listed-events {
+  width: 95%;
+  margin: auto;
+}
+
+.event-rows {
+  display: inline-block;
 }

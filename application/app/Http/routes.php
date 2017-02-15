@@ -58,6 +58,7 @@ Route::group(['middleware' => 'web'], function() {
 	]);
 
 
+
 });// end of middleware web group
 /*
 |--------------------------------------------------------------------------
@@ -184,6 +185,13 @@ Route::group(['middleware' => 'web'], function() {
 			]);
 
 
+			Route::get('/relationships/{username}/{id}', [
+			'uses' => 'RelationshipController@get_relationships_list',
+			'as' => 'relationships'
+			]);
+
+
+
 		}); // end of user prefix group
 
 
@@ -235,6 +243,42 @@ Route::group(['middleware' => 'web'], function() {
 			Route::get('/dashboard', [
 			'uses' => 'PostController@get_dashboard',
 			'as' => 'dashboard'
+			]);
+
+
+			Route::get('/calendar', [
+			'uses' => 'CalendarController@get_calendar',
+			'as' => 'calendar'
+			]);
+
+			Route::post('/post-add-event', [
+			'uses' => 'CalendarController@post_add_event',
+			'as' => 'post-add-event'
+			]);
+
+			Route::get('/edit-event/{id}', [
+			'uses' => 'CalendarController@get_edit_event',
+			'as' => 'edit-event'
+			]);
+
+			Route::post('/post-edit-event', [
+			'uses' => 'CalendarController@edit_event',
+			'as' => 'post-edit-event'
+			]);
+
+			Route::get('/add-event', [
+			'uses' => 'CalendarController@add_event',
+			'as' => 'add-event'
+			]);
+
+			Route::get('/delete-event/{id}', [
+			'uses' => 'CalendarController@delete_event',
+			'as' => 'delete-event'
+			]);
+
+			Route::get('/event-list', [
+			'uses' => 'CalendarController@get_event_list',
+			'as' => 'event-list'
 			]);
 
 		});// end of middleware web group

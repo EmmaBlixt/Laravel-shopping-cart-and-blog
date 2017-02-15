@@ -16,6 +16,21 @@
 
 
 <div class="nav-right">
+	<?php
+	$date = date('Y-m-d');
+	?>
+
+	<!-- Echo out the number of events this user has today-->
+@if (Auth::check() && Auth::user()->events()->event_date = $date)
+
+	<li>
+		<a href="{{ route('calendar') }}" 
+			title="You have {{ Auth::user()->events()->where('event_date', $date)->count() }} @if(Auth::user()->events()->where('event_date', $date)->count() == 1)event @else events @endif today!">
+		☑ {{ Auth::user()->events()->where('event_date', $date)->count() }}
+		</a>
+	</li>
+@endif
+
 
 	<!-- Echo out the number of unread messages this user has -->
 @if (Auth::check() && Auth::user()->unread_recieved_messages()->count())
@@ -32,11 +47,12 @@
 @if (Auth::check() && Auth::user()->friend_requests()->count())
 	<li>
 		<a href="{{ route('friends', ['name' => Auth::user()->name, 'id' => Auth::user()->id]) }}" 
-			title="You have {{ Auth::user()->friend_requests()->count() }} friend requests!">
+			title="You have {{ Auth::user()->friend_requests()->count() }} friend @if(Auth::user()->friend_requests()->count() == 1)request! @else requests! @endif">
 		♥ {{ Auth::user()->friend_requests()->count() }}
 		</a>
 	</li>
 @endif
+
 	@if(Auth::check())
 			<li>
 				<a href="{{ route('profile', ['username' => Auth::user()->name, 
@@ -60,6 +76,7 @@
 			<li><a href="{{ route('profile', ['username' => Auth::user()->name, 'id' => Auth::user()->id]) }}">Profile</a></li>
 			<li><a href="{{ route('messages', ['username' => Auth::user()->name, 'id' => Auth::user()->id]) }}" >Messages</a></li>
 			<li><a href="{{ route('friends', ['name' => Auth::user()->name, 'id' => Auth::user()->id]) }}">Friends</li></a>
+			<li><a href="{{ route('calendar') }}">Calendar</li></a>
 			<li><a href="{{ route('shopping-cart') }}">Shopping cart</li></a>
 			<li><a href="{{ route('logout') }}">Log out</a></li>
 		@else
