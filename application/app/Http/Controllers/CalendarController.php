@@ -155,7 +155,7 @@ public function delete_event($id) {
 |
 */
 public function get_event_list(){
-        $events = Event::where('event_date', '<=', date('Y-m-d'))
+        $events = Event::where('event_date', '>=', date('Y-m-d'))
                   ->where('user_id', Auth::user()->id)
                   ->orderBy('event_date', 'ASC', 'time', 'DESC')
                   ->get();
