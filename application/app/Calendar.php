@@ -140,18 +140,24 @@ class Calendar extends Model
                         ->orderBy('event_date', 'ASC')
                         ->first();
 
-        $date = date_create($event->event_date);
-        $event_day = date_format($date, 'd');
+
+        if($event != null) {
+            $date = date_create($event->event_date);
+            $event_day = date_format($date, 'd');
+                // mark days that has next upcoming event
+            $event_day = ($cellContent == $event_day && $this->currentMonth == $today_mon && $this->currentYear == $today_yea ? "event_today" : "nums_days");
+        }
 
         // mark the current day
         $class_day = ($cellContent == $today_day && $this->currentMonth == $today_mon && $this->currentYear == $today_yea ? "this_today" : "nums_days");
 
+        if($event != null){
+            $output = '<span id="' . $event_day .'">';
+        }
+        else $output = '';
 
-        // mark days that has next upcoming event
-        $event_day = ($cellContent == $event_day && $this->currentMonth == $today_mon && $this->currentYear == $today_yea ? "event_today" : "nums_days");
 
-
-        return '<li class="' . $class_day .'">' . '<span id="' . $event_day .'">' . $cellContent . '</li></span>' . "\r\n"; 
+        return '<li class="' . $class_day .'">' . $output . $cellContent . '</li></span>' . "\r\n"; 
     }
 
 

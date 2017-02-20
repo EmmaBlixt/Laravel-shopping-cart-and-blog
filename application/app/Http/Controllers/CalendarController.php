@@ -24,21 +24,28 @@ public function get_calendar() {
                   ->orderBy('event_date', 'ASC')
                   ->first();
 
-          // fetch all events that take place on the same date as the next upcoming one
-        $events = Event::where('event_date', '=', $first_event->event_date)
-                  ->where('user_id', Auth::user()->id)
-                  ->orderBy('event_date', 'ASC','time', 'DESC')
-                  ->get();
-
-
-                // delete old events that have passed and were made two months ago
+           // delete old events that have passed and were made two months ago
         $old_event = Event::where('event_date', '<', date('Y-m-d'))
                       ->where('created_at', '<', date("Y-m-d",strtotime("-2 Months")))
                       ->delete();
 
-        return view('calendar.calendar', ['calendar' => $calendar->show(),
-        								'events' => $events]);
+          if( $first_event == null) {
+              return view('calendar.calendar', ['calendar' => $calendar->show(),
+                'events' => $first_event]);
+          }
+
+
+            else {
+            // fetch all events that take place on the same date as the next upcoming one
+              $events = Event::where('event_date', '=', $first_event->event_date)
+                  ->where('user_id', Auth::user()->id)
+                  ->orderBy('event_date', 'ASC','time', 'DESC')
+                  ->get();
+                  return view('calendar.calendar', ['calendar' => $calendar->show(),
+                        'events' => $events]);
     }
+  
+ }
 
 /*
 |--------------------------------------------------------------------------
