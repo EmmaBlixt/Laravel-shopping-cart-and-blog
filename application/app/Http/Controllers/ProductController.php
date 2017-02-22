@@ -113,7 +113,7 @@ class ProductController extends Controller
 | It provides validation for the user input
 |
 */
-	public function add_new_product(Request $request, $id) {
+	public function add_new_product(Request $request) {
 		
 		$this->validate($request, [
 			'name' => 'required|alpha',
