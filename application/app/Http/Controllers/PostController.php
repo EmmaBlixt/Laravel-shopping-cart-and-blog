@@ -2,6 +2,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\User;
 use App\Post;
 use App\Like;
@@ -34,13 +38,37 @@ class PostController extends Controller
 |
 */
   public function new_post(Request $request) {
+    $user = Auth::user();
+
      $this->validate($request, [
       'text' => 'required|max:1000'
-      ]);
+        ]);
+
       $post = new Post([
             'body' => $request->input('text')
             ]);
-  $message = "An error occured";
+
+    $file = array('image' => Input::file('image'));
+
+// check if image was uploaded
+if(!isset($_FILES['image']) || $_FILES['image']['error'] == UPLOAD_ERR_NO_FILE) {
+    
+    if($request->user()->posts()->save($post)){
+      $message = "Post uploaded! (:";
+     }
+    return redirect()->route('dashboard')->with(['message' => $message]);
+}
+else
+
+
+      $destinationPath = 'uploads/posts'; // upload path
+      $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+      $fileName = $user->name . Post::all()->count() . '.' . $extension; // renameing image
+      Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
+
+     $post->post_img = $fileName;
+
+    $message = "An error occured";
      // if post is successfully uploaded, print message & redirect
      if($request->user()->posts()->save($post)){
       $message = "Post uploaded! (:";
@@ -59,17 +87,40 @@ class PostController extends Controller
     $this->validate($request, [
       'body' => 'required|max:1000'
       ]);
-    $post = Post::find($request['postId']);
+
+    $post = Post::find($request['post_id']);
+
     // check if logged in user is post author
     if(Auth::user() != $post->user) {
       return redirect()->back();
     }
     else
 
-    $post->body = $request['body'];
+    $post->body = $request['body']; 
+    $file = array('image' => Input::file('image'));
+    $message = "An error occurred :(";
+
+      // check if image was uploaded
+    if(!isset($_FILES['image']) || $_FILES['image']['error'] == UPLOAD_ERR_NO_FILE) {
+
+       if($post->update()){
+      $message = "Post updated! (:";
+     }
+    return redirect()->route('dashboard')->with(['message' => $message]);
+      }
+
+    else
+      $destinationPath = 'uploads/posts'; // upload path
+      $extension = Input::file('image')->getClientOriginalExtension(); // getting image extension
+      $fileName = $post->id . '.' . $extension; // renameing image
+      Input::file('image')->move($destinationPath, $fileName); // uploading file to given path
+      
+    $post->post_img = $fileName;
     
-    $post->update();
-       return response()->json(['new_body' => $post->body], 200);
+     if($post->update()){
+      $message = "Post updated! (:";
+     }
+    return redirect()->route('dashboard')->with(['message' => $message]);
      
   }
 /*
@@ -82,17 +133,60 @@ class PostController extends Controller
 */
   public function delete_post($id){
 
-    $parent_post = Post::find($parent_post_id);
     $post = Post::find($id);
   // check if logged in user is post author
     if(Auth::user() != $post->user) {
       return redirect()->back();
     }
 
+    // fetch all replies and likes related to the post
+    $replies = Post::where('parent_id', $id)->get();
+    $likes = Like::where('post_id', $id)->get();
+    unlink('uploads/posts/'.$post->post_img);
     $post->delete();
+
+    // delete all replies that belong to the deleted post
+    foreach ($replies as $reply) {  
+    $reply->delete();
+    }
+
+    // delete all replies that belong to the deleted post
+    foreach ($likes as $like) {  
+    $like->delete();
+    }
+
     return redirect()->route('dashboard')->with(['message' => 'Post deleted!']);
   
   }
+
+/*
+|--------------------------------------------------------------------------
+| Delete Image
+|--------------------------------------------------------------------------
+|
+| Allows the posts' creator to remove an image from a post
+|
+*/
+  public function delete_image($id){
+
+    $post = Post::find($id);
+  // check if logged in user is post author
+    if(Auth::user() != $post->user) {
+      return redirect()->back();
+    }
+
+    unlink('uploads/posts/'.$post->post_img);
+    $post->post_img = null;
+    $message = "An error occurred";
+
+      if($post->update()){
+      $message = "Image removed";
+     }
+    
+    return redirect()->route('dashboard')->with(['message' => $message]);
+  
+  }
+
 /*
 |--------------------------------------------------------------------------
 | Like Post
@@ -156,7 +250,7 @@ class PostController extends Controller
             'parent_id' => $request->input('post_id')
             ]);
 
-      $message = "An error occured";
+      $message = "An error occurred";
 
      // if reply is successfully uploaded, print message & redirect
 

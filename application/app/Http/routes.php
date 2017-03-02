@@ -246,6 +246,22 @@ Route::group(['middleware' => 'web'], function() {
 			]);
 
 
+			Route::get('/delete-image/{id}', [
+			'uses' => 'PostController@delete_image',
+			'as' => 'delete-image'
+			]);
+
+
+/*
+|--------------------------------------------------------------------------
+| Calendar Routes
+|--------------------------------------------------------------------------
+|
+| Deals with events on the calendar
+|
+*/
+
+
 			Route::get('/calendar', [
 			'uses' => 'CalendarController@get_calendar',
 			'as' => 'calendar'
@@ -280,6 +296,7 @@ Route::group(['middleware' => 'web'], function() {
 			'uses' => 'CalendarController@get_event_list',
 			'as' => 'event-list'
 			]);
+
 
 		});// end of middleware web group
 	
